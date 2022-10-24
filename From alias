@@ -28,3 +28,5 @@ SELECT * FROM cats;
  
 DELETE FROM cats;-->it will delete all the records in a table but not a table
 ****************************************************************************************************************************************************************************
+https://www.youtube.com/watch?v=DjhthBTXvXg to create a file and to execute queries watch this video
+to run a file use -->source filename.sql
