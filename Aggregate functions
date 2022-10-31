@@ -159,5 +159,109 @@ SELECT birthdt, DATE_FORMAT(birthdt, '%H:%i') FROM people;
  
 SELECT birthdt, DATE_FORMAT(birthdt, 'BORN ON: %r') FROM people;
 ********************************************************************************************************************************************************************
+-- What's a good use case for CHAR?
+ 
+-- Used for text that we know has a fixed length, e.g., State abbreviations, 
+-- abbreviated company names, etc.
+********************************************************************************************************************************************************************
+-- What's the difference between DATETIME and TIMESTAMP?
+ 
+-- They both store datetime information, but there's a difference in the range, 
+-- TIMESTAMP has a smaller range. TIMESTAMP also takes up less space. 
+-- TIMESTAMP is used for things like meta-data about when something is created
+-- or updated.
+**************************************************************************************************************************************************************************
+                                                  CODE:NOT EQUAL
+SELECT * FROM books
+WHERE released_year != 2017;
+***********************************************************************************************************************************************************************
+                                                                   CODE:NOT LIKE
+        SELECT * FROM books
+WHERE title NOT LIKE '%e%';
+***********************************************************************************************************************************************************************
+                                                                CODE:GREATER THAN
+   
+SELECT * FROM books
+WHERE pages > 500;
+********************************************************************************************************************************************************************
+                                                               CODE:LESS THAN OR EQUAL 
 
+SELECT * FROM books
+WHERE released_year <= 1985;
+********************************************************************************************************************************************************************
+                                                                      CODE:AND
+SELECT title, author_lname, released_year FROM books
+WHERE released_year > 2010
+AND author_lname = 'Eggers';
+***********************************************************************************************************************************************************************
+                                                                         CODE:OR
+SELECT title, author_lname, released_year FROM books
+WHERE author_lname='Eggers' OR
+released_year > 2010;
+*************************************************************************************************************************************************************************
+                                                                      CODE:BETWEEN
+SELECT title, released_year FROM books
+WHERE released_year BETWEEN 2004 AND 2014;
+***********************************************************************************************************************************************************************
+                                                                   CODE:COMPARING DATES
+SELECT * FROM people WHERE birthtime 
+BETWEEN CAST('12:00:00' AS TIME) // cast converts the type of data
+AND CAST('16:00:00' AS TIME);
+*********************************************************************************************************************************************************************
+                                                            CODE:IN
+SELECT title, author_lname FROM books
+WHERE author_lname IN ('Carver', 'Lahiri', 'Smith');
+ 
+SELECT title, author_lname FROM books
+********************************************************************************************************************************************************************
+                                                                     CODE:CASE
+SELECT title, released_year,
+CASE
+	WHEN released_year >= 2000 THEN 'modern lit'
+    ELSE '20th century lit' 
+END AS genre
+FROM books;
+WHERE author_lname NOT IN ('Carver', 'Lahiri', 'Smith');
+******************************************************************************************************************************************************************
+                                                                   CODE:UNIQUE
+CREATE TABLE contacts (
+	name VARCHAR(100) NOT NULL,
+    phone VARCHAR(15) NOT NULL UNIQUE
+);
 
+*********************************************************************
+BOOKS DATA
+CREATE TABLE books 
+	(
+		book_id INT AUTO_INCREMENT,
+		title VARCHAR(100),
+		author_fname VARCHAR(100),
+		author_lname VARCHAR(100),
+		released_year INT,
+		stock_quantity INT,
+		pages INT,
+		PRIMARY KEY(book_id)
+	);
+  INSERT INTO books (title, author_fname, author_lname, released_year, stock_quantity, pages)
+VALUES
+('The Namesake', 'Jhumpa', 'Lahiri', 2003, 32, 291),
+('Norse Mythology', 'Neil', 'Gaiman',2016, 43, 304),
+('American Gods', 'Neil', 'Gaiman', 2001, 12, 465),
+('Interpreter of Maladies', 'Jhumpa', 'Lahiri', 1996, 97, 198),
+('A Hologram for the King: A Novel', 'Dave', 'Eggers', 2012, 154, 352),
+('The Circle', 'Dave', 'Eggers', 2013, 26, 504),
+('The Amazing Adventures of Kavalier & Clay', 'Michael', 'Chabon', 2000, 68, 634),
+('Just Kids', 'Patti', 'Smith', 2010, 55, 304),
+('A Heartbreaking Work of Staggering Genius', 'Dave', 'Eggers', 2001, 104, 437),
+('Coraline', 'Neil', 'Gaiman', 2003, 100, 208),
+('What We Talk About When We Talk About Love: Stories', 'Raymond', 'Carver', 1981, 23, 176),
+("Where I'm Calling From: Selected Stories", 'Raymond', 'Carver', 1989, 12, 526),
+('White Noise', 'Don', 'DeLillo', 1985, 49, 320),
+('Cannery Row', 'John', 'Steinbeck', 1945, 95, 181),
+('Oblivion: Stories', 'David', 'Foster Wallace', 2004, 172, 329),
+('Consider the Lobster', 'David', 'Foster Wallace', 2005, 92, 343);
+INSERT INTO books
+    (title, author_fname, author_lname, released_year, stock_quantity, pages)
+    VALUES ('10% Happier', 'Dan', 'Harris', 2014, 29, 256), 
+           ('fake_book', 'Freida', 'Harris', 2001, 287, 428),
+           ('Lincoln In The Bardo', 'George', 'Saunders', 2017, 1000, 367);
